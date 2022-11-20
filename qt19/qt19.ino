@@ -40,9 +40,9 @@ int crosshairLine = firedCrosshair;
 int lastShrunkCrosshair = millis();
 // Fire control stuff
 byte numberOfDartsToShoot = 0;
-bool previousTriggerState = LOW;
-// Trigger ISR handling
-int lastTriggerFall = millis();
+bool triggerState = LOW;
+int lastFired = millis();
+int lastTrigger = millis(); // Trigger ISR handling
 
 Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
@@ -59,8 +59,7 @@ void setup() {
   pinMode(PIN_TRIGGER, INPUT_PULLUP);
   pinMode(PIN_MAG, INPUT_PULLUP);
   //Burst fire requires ISR operation due to long relative firing time vs semi
-  attachInterrupt(digitalPinToInterrupt(PIN_TRIGGER),triggerRisingHandler,RISING); 
-  attachInterrupt(digitalPinToInterrupt(PIN_TRIGGER),triggerFallingHandler,FALLING);
+  attachInterrupt(digitalPinToInterrupt(PIN_TRIGGER),triggerRisingHandler,RISING); //RISING, CHANGE, HIGH...
 
   //Initialise motor control
   delay(500);
@@ -68,7 +67,7 @@ void setup() {
   delay(1000);
   FlyshotSetNewMotorSpeed(FLYWHEEL_SPEED);
   delay(500);
-  FlyshotSetMotorDirectionForward(FLYSHOT_ESC_A);  //Note you can just reverse these if you wired the motors wrong
+  FlyshotSetMotorDirectionForward(FLYSHOT_ESC_A);  //Note: you can just reverse these if you wired the motors wrong
   delay(500);
   FlyshotSetMotorDirectionForward(FLYSHOT_ESC_B);
   delay(500);
@@ -90,14 +89,11 @@ void setup() {
 // Handle trigger pull, new async/interrupt method
 void triggerRisingHandler(){
   // Rising edge is only valid (i.e. non-chatter) if there wasn't just a falling edge
-  if (( millis() - lastTriggerFall) > 20 ){
-    numberOfDartsToShoot = 2;
+  if (( millis() - lastTrigger) > 20 ){ //20ms debounce
+    if (triggerState == HIGH) numberOfDartsToShoot = 2;
+    triggerState = !triggerState;
+    lastTrigger = millis();
   }
-}
-
-// Handle trigger pull, new async/interrupt method
-void triggerFallingHandler(){
-  lastTriggerFall = millis();
 }
 
 void loop() {
@@ -115,6 +111,10 @@ void loop() {
 
   // Handle mag out
   if (!digitalRead(PIN_MAG)) ammoLeft = 15;
+
+  // Switch chattering/bouncing introduces unreliability in interrupt-driven state monitoring (trigger pull vs release), see triggerRisingHandler()
+  // Have to repeatedly recheck state inbetween shots.
+  triggerState = digitalRead(PIN_TRIGGER);  
 
   // Handle trigger pull - old method, synchronous operation
   // Detect falling edge trigger pull, set the burst count to 2 if it's the case
@@ -145,13 +145,16 @@ void loop() {
     ammoLeft--;
     crosshairLine = firedCrosshair;
     lastShrunkCrosshair = millis();
+    lastFired = millis();
 
     NBCProcessFlywheelSpeed();
   } else {
-    FlyshotStopMotors();
+    if((millis() - lastFired) > 50){ // Give the darts a few ms to pass through the flywheels
+      FlyshotStopMotors(); // Before stopping
+    }
 
     // Dynamic crosshair shrinks after no firing
-    if (millis() - lastShrunkCrosshair > 80) { //Shrink rate - number refers to wait period between shrinks
+    if (millis() - lastShrunkCrosshair > 80) { //Shrink rate - number refers to wait period between shrinks, smaller = faster shrink
       if (crosshairLine < unfiredCrosshair) {
         crosshairLine++;
       }
