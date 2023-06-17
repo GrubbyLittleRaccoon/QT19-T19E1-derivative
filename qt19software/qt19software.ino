@@ -78,7 +78,7 @@ void setup() {
   //Finish setting up LCD
   oled.display();
   oled.clearDisplay();
-  oled.ssd1306_command(SSD1306_SEGREMAP);  //Flip display horizontally
+  //oled.ssd1306_command(SSD1306_SEGREMAP);  //Flip display horizontally
   //oled.ssd1306_command(SSD1306_COMSCANINC); //Flip display vertically
   oled.setTextSize(1);
   oled.setTextColor(WHITE);
@@ -87,27 +87,45 @@ void setup() {
 }
 
 // Handle trigger pull, new async/interrupt method
+// Note: Triggered on rising and falling due to chatter
 void triggerRisingHandler(){
-  // Rising edge is only valid (i.e. non-chatter) if there wasn't just a falling edge
   if (( millis() - lastTrigger) > 20 ){ //20ms debounce
-    if (triggerState == HIGH) numberOfDartsToShoot = 2;
-    triggerState = !triggerState;
-    lastTrigger = millis();
+    if (triggerState == HIGH) {
+      numberOfDartsToShoot = 2;
+      triggerState = LOW;
+      lastTrigger = millis();
+    }
   }
 }
+
+// Using https://oscarliang.com/lipo-battery-guide/ for reference - 3.6V to 4.2V per cell.
+// Charge range = 3S 10.8V-12.6V, 4S 14.4V-16.8V
+// Therefore % = (NBCGetVoltage()-(10.8))/(12.6-10.8) for 3S
+
 
 void loop() {
   // OLED display state
   oled.clearDisplay();
+  
+  float powerVoltage = NBCGetVoltage();
+  float propThreeS = (powerVoltage-(10.8))/(12.6-10.8); 
+  float propFourS = (powerVoltage-(14.4))/(16.8-14.4);
+  oled.setCursor(0, 47);
+  oled.println(String(powerVoltage, 2) + "V");
+  oled.setCursor(40, 47);
+  oled.println("3S:" + String(propThreeS*100, 0) + "%");
+  oled.setCursor(40, 56);
+  oled.println("4S:" + String(propFourS*100, 0) + "%");
+
+  
+  //oled.setCursor(5, 45);  // Draw the ammo at 5, 45
   oled.setCursor(0, 0);
-  oled.println(String(NBCGetVoltage(), 2) + "V");
-  oled.setCursor(5, 45);  //Placement of digit counter
   oled.println(ammoLeft);
   drawAmmo(ammoLeft);
-  drawCrosshair(crosshairLine, 50);  //50 = crosshair size, 15 = haven't fired length, 10 = just fired length
-  oled.display();
+  
+  oled.display(); // Draw
 
-  if( NBCGetVoltage() < MIN_BATTERY_VOLTAGE ) return;
+  if( NBCGetVoltage() < MIN_BATTERY_VOLTAGE ) return; // Cap functionality at extreme lower bound 3S (9V)
 
   // Handle mag out
   if (!digitalRead(PIN_MAG)) ammoLeft = 15;
@@ -165,53 +183,17 @@ void loop() {
   }
 }
 
-void drawCrosshair(int lineLength, int size) {
-  int dotRadius = 1;
-  // Centre
-  oled.drawCircle(64, size / 2, dotRadius, WHITE);
-
-  // Top line
-  oled.drawLine(SCREEN_WIDTH / 2, 0,
-                SCREEN_WIDTH / 2, lineLength, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 - 1, 0,
-                SCREEN_WIDTH / 2 - 1, lineLength - 1, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 + 1, 0,
-                SCREEN_WIDTH / 2 + 1, lineLength - 1, WHITE);
-
-  // Bottom line
-  oled.drawLine(SCREEN_WIDTH / 2, size - lineLength,
-                SCREEN_WIDTH / 2, size, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 - 1, size - lineLength + 1,
-                SCREEN_WIDTH / 2 - 1, size, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 + 1, size - lineLength + 1,
-                SCREEN_WIDTH / 2 + 1, size, WHITE);
-
-  // Left line
-  oled.drawLine(SCREEN_WIDTH / 2 - size / 2, size / 2,
-                SCREEN_WIDTH / 2 - size / 2 + lineLength, size / 2, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 - size / 2, size / 2 - 1,
-                SCREEN_WIDTH / 2 - size / 2 + lineLength - 1, size / 2 - 1, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 - size / 2, size / 2 + 1,
-                SCREEN_WIDTH / 2 - size / 2 + lineLength - 1, size / 2 + 1, WHITE);
-
-  // Right line
-  oled.drawLine(SCREEN_WIDTH / 2 + size / 2, size / 2,
-                SCREEN_WIDTH / 2 + size / 2 - lineLength, size / 2, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 + size / 2, size / 2 - 1,
-                SCREEN_WIDTH / 2 + size / 2 - lineLength + 1, size / 2 - 1, WHITE);
-  oled.drawLine(SCREEN_WIDTH / 2 + size / 2, size / 2 + 1,
-                SCREEN_WIDTH / 2 + size / 2 - lineLength + 1, size / 2 + 1, WHITE);
-
-  // Ring
-  oled.drawCircle(64, size / 2, size / 2 - lineLength / 2, WHITE);
-}
-
 void drawAmmo(int ammoCount) {
-  int ammoWidth = 3;
-  int ammoHeight = 5;
+  int ammoWidth = 18;
+  int ammoHeight = 14;
   int ammoSpace = 1;
   int cornerRad = 1;
+
+  int cols = 5;
   for (int ammoInd = 0; ammoInd < ammoCount; ammoInd++) {
-    oled.fillRoundRect((ammoInd * (ammoWidth + ammoSpace)) + 5, 55, ammoWidth, ammoHeight, cornerRad, WHITE);
+    int circleX = ((ammoInd%cols)) * (ammoWidth + ammoSpace);
+    int circleY = ((ammoInd/cols)) * (ammoHeight + ammoSpace);
+    //x, y, width, height, radius, colour
+    oled.fillRoundRect(circleX + 15, circleY, ammoWidth, ammoHeight, cornerRad, WHITE);
   }
 }
