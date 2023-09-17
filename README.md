@@ -138,7 +138,6 @@ Note: Depicted here are these attachments:
 - "Shade vertical foregrip" https://www.thingiverse.com/thing:3892164 
 - "Quick point sight - Open" https://www.thingiverse.com/thing:4887523
 
-
 ### 3.3 Combining the two sets of files
 I intended to keep some cross compatible files, but everything spiralled/scope creeped out of control, leaving only the cage cross-compatible. This is one reason why I'd recommend considering looking at one of the other hybrid builds, particularly the gryphon-HyCon platform. I feel that using an established platforms may provide a more mature foundation for modularity with other existing designs.
 
@@ -188,9 +187,12 @@ I've added a few cages for the iFlight XE Pro motors I'm using.
 
 I've added a cover over the motors in the main body for safety for some of these, but I'm likely abandoning that change, turns out trying to clamp the cage is less ergonomic than using a vertical foregrip.
 
-I'm moving away from the cages in this repo though, I'm working on a variation of the Hy-Con cage in a separate repo, so even if you're using my iFlight pro motors instead of  these files still come second to other options.
+I'm using a variation of the HyCon system that includes rifling inserts - Work on the system is ongoing here:
+https://github.com/GrubbyLittleRaccoon/HyCon_muzzleinsert
 
-I'll likely also eventually add a variation of these cages that includes rifling inserts (BCAR, PCAR, smoothbore, SCAR etc.)
+If you're not interested in the rifling insert, and you use a different motor, you should be able to substitute the motor mount section of the cage with whichever of Toruk's cages you're after.
+To make this compatible with the QT19 system you can pair this with:
+- Cages/Oldcages/Hy-Con-GammaMajor_Cover_iFlightXE_PRO_undercut.stl
 
 ### 3.4 Assembly notes
 Hole size -The bolts used are M3 for the most part, some M4 near the back + solenoid mounting
