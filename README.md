@@ -77,16 +77,16 @@ I'm not sure if the mounting patterns for these purpose-built solenoids are the 
 ### 2.5 Screen:
 White 128x64 OLED Display Module for Arduino 0.96"
 
-### 2.6 Bolts:
-This blaster is assembled with a thrown-together assortment of M3 and M4 bolts. I apologise that I have not kept track of the lengths. 
+### 2.6 Screws:
+This blaster is assembled with a thrown-together assortment of M3 and M4 SHCS screws. I apologise that I have not kept track of the lengths. 
 
-- The stock and solenoid are held together with M4, everything else is M3. You should be able to get away with firstly an assortment of SCSH bolts such as this: 
+
+- The stock and solenoid are held together with M4, everything else is M3. You should be able to get away with firstly an assortment of SCSH such as this: 
     <div align="center">
-        <img src="images/assortedbolts.png" width="300"/>
+        <img src="images/assortedscrews.png" width="300"/>
         <p>e.g. https://www.ebay.com.au/itm/403461691176</p>
     </div>
-- There's also a bit around the mag release that requires M3x8 cap head bolts due to poor placement. 
-- I also had to purchase sets of M3x25 M3x35 bolts to hold the receiver together.
+- I also had to purchase sets of M3x25 and M3x35 SHCS to hold the receiver together.
 
 ## 3. STL files
 We're going to use a combination of the original T19 files and my QT19 variant files. There is some small amount of wiggle-room for part customisation.
@@ -116,7 +116,7 @@ I've split my files into these folders:
         </div>
     - I’m using the Narfduino board with integrated ESCs, so bulges on the side for ESCs are not necessary. In retrospect though perhaps I should've left some space to allow for hardware versatility.
 - Receiver
-    - This required a longer, narrower receiver shape, and bolts on the side when compared to the original T19 due to the shift from NEMA17 steppers to solenoid.
+    - This required a longer, narrower receiver shape, and M4 SHSC on the side when compared to the original T19 due to the shift from NEMA17 steppers to solenoid.
     - Shape changes also due to shift to the Narfduino controller board.
 - Stock
     - The main stock body, QT19_Stock can be swapped out with the original T19_Stock.
@@ -195,7 +195,7 @@ To make this compatible with the QT19 system you can pair this with:
 - Cages/Oldcages/Hy-Con-GammaMajor_Cover_iFlightXE_PRO_undercut.stl
 
 ### 3.4 Assembly notes
-Hole size -The bolts used are M3 for the most part, some M4 near the back + solenoid mounting
+Hole size -The SHSC used are M3 for the most part, some M4 near the back + solenoid mounting
 The stock is held together with M4, everything else is M3.
 The linked assembly instructions from torukmakto4’s original build provide a good reference for how to conduct assembly. https://torukmakto4.blogspot.com/2019/01/t19-build-guide-part-1-3d-printed-parts.html
 
@@ -223,7 +223,11 @@ Similar to the trigger, the QT19 fileset has a mag release with a spacer to be m
 </div>
 
 #### Receiver
-The switch holder for the magazine release is a little awkward to assemble. After you attach the trigger plate to the receiver, mount the switch inside the holder/bracket. 
+The switch holder for the magazine release is a little awkward to assemble. Tackle this only after you attach the trigger plate to the receiver.
+
+Firstly, mount the switch inside the holder/bracket. I've done this using 4x M3x8 SHSC, which probably isn't the best way to handle these switches, feel free find a better way to do this.
+
+I've used two switches despite only wiring one up to supply additional force to the mag release lever.
 
 <div align="center">
     <img src="images/magblockswitches.jpg" width="300" />
@@ -232,19 +236,12 @@ The switch holder for the magazine release is a little awkward to assemble. Afte
 
 Then push it down slowly, and to avoid the wires sticking out, I tucked them in with a flathead screwdriver as I pushed down. 
 
-Older version of the mag release block being assembled:
-<div style="display: flex; justify-content: center;">
-  <div style="margin-right: 10px;">
-    <img src="images/magswitchleft.png" height="300"/>
-    <p style="text-align: center;">Left: Assemble the switch holder</p>
-  </div>
-  <div>
-    <img src="images/magswitchright.png" height="300"/>
-    <p style="text-align: center;"> Right: Push it down slowly, tucking/prodding wires in.</p>
-  </div>
+<div align="center">
+    <img src="images/magswitchpush.jpg" width="300" />
+    <p>Stuff wires into block, then push down block while poking wires in.</p>
 </div>
 
-Then I bolted the holder/bracket to the blaster body with a couple of 8mm button-head M3 bolts.
+Then I bolted the holder/bracket to the blaster body with a couple of button-head M3x8 SHSC.
 
 <div align="center">
     <img src="images/magblockassembled.jpg" width="300" />
@@ -288,10 +285,14 @@ Note: If you’re using the Narfduino v1.4, you may need to install certain boar
 </div>
 
 ### 5.2 My software:
-Link to my software (Upload using Airzone’s instructions): https://github.com/GrubbyLittleRaccoon/T19variant/tree/main/qt19software 
+If the following link doesn't work, the software should be somewhere in this repository.
+Link to my software (Upload using Airzone’s instructions): https://github.com/GrubbyLittleRaccoon/QT19-T19E1-derivative/tree/main/qt19%20controller%20software 
+
 This is based on the Airzone’s NBC library, it’s intended as a 2-round burst functionality, with the usual “wait for motor to rev up” functionality that the NBC library creates from Toruk’s Flyshot SimonK implementation. It also controls the OLED board with a 15-round ammo counter (reset on mag change).
 
 Note that certain previous commits featured a dynamic crosshair (expands on firing, retracts slowly, influenced by popular FPS game design), but without sourcing a proper reflective parabolic lens and corresponding closed scope design, this is pretty pointless. Some of these older commits do have issues with debounced inputs distinguishing between rising and falling edges, though.
+
+Note to self: The solenoid timing is statically set, and has trouble firing darts through around the 11.15V mark for my specific setup. Consider making the solenoid firing delay voltage-dependent i.e. give less time to fire at high voltages.
 
 ## 6. Issues/abandoned parts
 ### HUD sight
@@ -315,14 +316,14 @@ I intended for the solenoid introduction to allow for the addition of a reciproc
 </div>
 
 ### Solenoid mounting hole alignment
-I messed this up which is why I only have 3 bolts in each side in some pictures, not sure if I've fixed it in later iterations
+I messed this up which is why I only have 3 M3 SHSC in each side in some pictures, not sure if I've fixed it in later iterations
 
 ### File cleanup
 IMO the files could be cleaned up somewhat:
 - The slot for the faux charging handle could be removed for printability
 - Top plate files need to be revisited since I used acrylic sheet instead
 - The files could be changed to be able to disassemble them after soldering electronics, it's a bit silly that you can't do that with my design.
-- The side covers aren't great for accomodating the M3 bolt heads, we need design in more space.
+- The side covers aren't great for accomodating the M3 SHCS heads, we need design in more space.
 - The software for the display could probably be a little more modular
 
 ## 7. End notes
