@@ -34,7 +34,7 @@ List of components I used, note that they are not necessarily the ideal parts in
 
 ### 2.1 Motors:
 <div align="center">
-  <img src="iFlight Xing-E Pro 2306.png" alt="iFlight Xing-E Pro 2306" width="300" />
+  <img src="images/iFlight Xing-E Pro 2306.png" width="300" />
   <p>iFlight Xing-E Pro 2306</p>
 </div>
 
@@ -63,7 +63,7 @@ Be sure to also either select a small enough battery or large enough alternative
 This generic solenoid I used was 13.27USD, whereas a Neutron solenoid is around 30USD and a FTW Hyperdrive is around 35USD.
 
 <div align="center">
-  <img src="genericsolenoid.png" alt="Generic 35mm stroke solenoid" width="300"/>
+  <img src="images/genericsolenoid.png" width="300"/>
   <p>Generic 35mm stroke solenoid</p>
 </div>
 
@@ -82,7 +82,7 @@ This blaster is assembled with a thrown-together assortment of M3 and M4 bolts. 
 
 - The stock and solenoid are held together with M4, everything else is M3. You should be able to get away with firstly an assortment of SCSH bolts such as this: 
     <div align="center">
-        <img src="assortedbolts.png" alt="https://www.ebay.com.au/itm/403461691176" width="300"/>
+        <img src="images/assortedbolts.png" width="300"/>
         <p>e.g. https://www.ebay.com.au/itm/403461691176</p>
     </div>
 - There's also a bit around the mag release that requires M3x8 cap head bolts due to poor placement. 
@@ -96,7 +96,7 @@ I'll continue keeping an eye on toruk's github repositories here for when he eve
 
 Until then, the T19 files are available here: https://drive.google.com/drive/folders/1cfsm5mGHDXkl9gdmkl7Z_lcq5yUasON_?usp=sharing
 
-### 3.2 QT19 files
+### 3.2 QT19 files/changes
 I've split my files into these folders:
 - Cages
     - There are a number of cage variations here that I trialled that you could potentially choose from.
@@ -104,14 +104,14 @@ I've split my files into these folders:
     - There is also an underbarrel rail that is compatible with the shaft holes in the BR2207S files – I found that the shafts stuck out a little bit past the cage cover, so I had to add covering features to the rail accommodate that. There is also a diagonal block that fills in magwell - necessary due to the overhang.
 - Grip
     - <div align="left">
-        <img src="qt19griproughprint.jpg" alt="QT19 grip" width="200" />
+        <img src="images/qt19griproughprint.jpg" width="200" />
         <p>QT19 grip assembly</p>
         </div>
     - In addition to the curved shape, the QT19 grip also includes space for a mag release switch that acts as a spring/reload detection.
 - Magwell/breech
     - The magwell has been altered to fit the solenoid receiver. I’ve shifted the cage placement over the magwell to compensate for the lower stroke length of the 30mm solenoid, this indents the top segment backwards, placing the wheels closer to the magazine feed. The wheels don’t really grip the darts until they are somewhat into the cage, so we should be able to get away with the cage slightly overhanging the magwell.
     - <div align="left">
-        <img src="flywheeldartvisualisation.png" alt="Dart feeding into cage" width="200" />
+        <img src="images/flywheeldartvisualisation.png" width="200" />
         <p>Demonstration of where the dart starts to feed into the cage</p>
         </div>
     - I’m using the Narfduino board with integrated ESCs, so bulges on the side for ESCs are not necessary. In retrospect though perhaps I should've left some space to allow for hardware versatility.
@@ -130,7 +130,7 @@ I've split my files into these folders:
     - Short breech (no undercut)
 
 <div align="center">
-  <img src="qt19stlbreakdown.png" alt="QT19 STL file breakdown" width="600" />
+  <img src="images/qt19stlbreakdown.png" width="600" />
   <p>QT19 part breakdown (Note: This diagram is a little dated, but gives an approximation of the parts).</p>
 </div>
 
@@ -145,12 +145,14 @@ I intended to keep some cross compatible files, but everything spiralled/scope c
 Firstly, you'll need these T19 files that are the same across both versions:
 - Ribbed stock butt plate 
     - T19E1/Common/STL/T19_ButtplateCurved
+- Grip rotation piece
+    - T19E1/Common/STL/T19_GripFramePivotPlate
 - Mag release 
     - T19E1/Common/STL/T19_ShortMagRelease
 - Trigger 
     - T19E1/Common/STL/T19_Trigger
-- Grip rotation piece
-    - T19E1/Common/STL/T19_GripFramePivotPlate
+
+However, you'll note that I've also added some personal alternatives to the mag release and trigger, feel free to use either version.
 
 Then, you'll need to grab all of the QT19 files, with the exception of the cage setup, which will be largely dependent on the motors you are running (sourcing can be somewhat unreliable).
 
@@ -177,8 +179,8 @@ In the repository you will find cages for these motors:
 Because there's variation between motors, you will have to make your own file edits for your specifications. For instance, if you want to use spacing other than the standard 9mm or 9.5mm, or if you want to use the iFlight motors with a cage cover compatible with the lower gamma rail. Depending on your FreeCAD/STL editing skills, it may be worth digging through the files before sourcing motors. Don't worry though, the wheels are relatively straightforward geometrically speaking:
 
 <div align="center">
-  <img src="flywheelCrushProfile.png" alt="QT19 STL file breakdown" width="500" />
-  <p>Here's the profile you can build off from - note that the 20 degree angle was chosen to accomodate my printer's overhang limit of 70 degrees </p>
+  <img src="images/flywheelCrushProfile.png" width="500" />
+  <p>Flywheel contact profile that you can build off from - note that the 20 degree angle was chosen to accomodate my printer's overhang limit of 70 degrees, adjust accordingly </p>
 </div>
 
 #### 3.3.2 QT19 cage files
@@ -194,44 +196,82 @@ I'll likely also eventually add a variation of these cages that includes rifling
 Hole size -The bolts used are M3 for the most part, some M4 near the back + solenoid mounting
 The stock is held together with M4, everything else is M3.
 The linked assembly instructions from torukmakto4’s original build provide a good reference for how to conduct assembly. https://torukmakto4.blogspot.com/2019/01/t19-build-guide-part-1-3d-printed-parts.html
- 
+
+#### Grip
+The QT19 fileset has a spaced/spacer trigger as an alternative to the T19 - feel free to use either depending on your preferences. The original T19 relies on devcon to glue the pivot plate to the handle handle, and an SHCS with a smooth shoulder, whereas the QT9 adds a spacer that allow you to get away with using regular SHCS, and is more forgiving of overtorquing, which would otherwise cause the original T19 to jam.
+
 <div align="center">
-    <img src="handleplateassembly.png" alt="Failed charging handle component" width="300" />
-    <p>Failed charging handle component</p>
+    <img src="images/triggerspacer.jpg" width="300" />
+    <p>QT19 trigger with spacer</p>
 </div>
 
 I found it difficult to get the handle in the handle plate while aligning it, I found clamps to assist after partially bolting it in somewhat helpful
 
 <div align="center">
-    <img src="stocktube.png" alt="Failed charging handle component" width="300" />
+    <img src="images/handleplateassembly.png" width="300" />
+    <p>Failed charging handle component</p>
+</div>
+
+#### Magwell/Breech
+Similar to the trigger, the QT19 fileset has a mag release with a spacer to be more forgiving of overtorquing.
+
+<div align="center">
+    <img src="images/magreleasespaced.jpg" width="300" />
+    <p>QT19 trigger with spacer</p>
+</div>
+
+#### Receiver
+The switch holder for the magazine release is a little awkward to assemble. After you attach the trigger plate to the receiver, mount the switch inside the holder/bracket. 
+
+<div align="center">
+    <img src="images/magblockswitches.jpg" width="300" />
+    <p>Mag block with switches inserted</p>
+</div>
+
+Then push it down slowly, and to avoid the wires sticking out, I tucked them in with a flathead screwdriver as I pushed down. 
+
+Older version of the mag release block being assembled:
+<div style="display: flex; justify-content: center;">
+  <div style="margin-right: 10px;">
+    <img src="images/magswitchleft.png" height="300"/>
+    <p style="text-align: center;">Left: Assemble the switch holder</p>
+  </div>
+  <div>
+    <img src="images/magswitchright.png" height="300"/>
+    <p style="text-align: center;"> Right: Push it down slowly, tucking/prodding wires in.</p>
+  </div>
+</div>
+
+Then I bolted the holder/bracket to the blaster body with a couple of 8mm button-head M3 bolts.
+
+<div align="center">
+    <img src="images/magblockassembled.jpg" width="300" />
+    <p>Mag release block bolted in</p>
+</div>
+
+#### Stock
+
+<div align="center">
+    <img src="images/stocktube.png" width="300" />
     <p>Failed charging handle component</p>
 </div>
 
 I was too lazy to drive to the hardware store and get my hands on tubing, so I threw together some prints. Note that I wanted to print it lengthways to avoid layer separation issues.
 
-<div style="display: flex; justify-content: center;">
-  <div style="margin-right: 10px;">
-    <img src="magswitchleft.png" alt="WIP of screen, clearer shot" height="300"/>
-    <p style="text-align: center;">Left: Assemble the switch holder</p>
-  </div>
-  <div>
-    <img src="magswitchright.png" alt="Implementation of HUD" height="300"/>
-    <p style="text-align: center;"> Right: Push it down slowly, tucking/prodding wires in.</p>
-  </div>
-</div>
-
-The switch holder for the magazine release is a little awkward to assemble. After you attach the trigger plate to the receiver, mount the switch inside the holder/bracket. Then push it down slowly, and to avoid the wires sticking out, I tucked them in with a flathead screwdriver as I pushed down. Then I bolted the holder/bracket to the blaster body with a couple of 8mm button-head M3 bolts.
-
 ## 4. Wiring
+Remember to complete the assembly prior to the wiring. Unfortunately swapping out printed components after soldering wasn't a consideration when I was CAD-ing the various parts of the shell.
+
+Once you've completed all the assembly and test-fits (this includes the electronics), thread the wires through the shell before you start soldering.
+
 <div align="center">
-    <img src="circuitdiagram.png" alt="Failed charging handle component" width="300" />
+    <img src="images/circuitdiagram.png" width="300" />
     <p>Blaster circuit diagram</p>
 </div>
 
 Note: Careful about which version of the Narfduino Compleat board you have – the v1.2 and v1.4 have slightly different pinouts. 
 
 <div align="center">
-    <img src="solderedboard.png" alt="Failed charging handle component" width="300" />
+    <img src="images/solderedboard.png" width="300" />
     <p>Soldered Narfduino compleat</p>
 </div>
 
@@ -241,7 +281,7 @@ Airzone’s website contains instructions for uploading software in the “getti
 Note: If you’re using the Narfduino v1.4, you may need to install certain board managers: https://mcudude.github.io/MiniCore/package_MCUdude_MiniCore_index.json (Install the MiniCore board)
  
 <div align="center">
-    <img src="arudinouploadsettings.png" alt="Failed charging handle component" width="300" />
+    <img src="images/arduinouploadsettings.png" width="300" />
     <p>Arduino Upload board settings</p>
 </div>
 
@@ -256,11 +296,11 @@ Note that certain previous commits featured a dynamic crosshair (expands on firi
 I initially programmed the screen output to act as a HUD sight with a dynamic crosshair and ammo counter, but this ended up not being bright enough in outdoor games without specialised sight lenses. These lenses (With potentially red-dot style sight placement!) seem available on AliExpress in varying questionable sizings, and sufficient shrouding might help with outdoor visibility, so there might actually exist a reasonable solution! For now, however, I'm shelving this idea and just sticking with a simple display and relying on other sights.
 <div style="display: flex; justify-content: center;">
   <div style="margin-right: 10px;">
-    <img src="hudsight2.png" alt="WIP of screen, clearer shot" height="200"/>
+    <img src="images/hudsight2.png" height="200"/>
     <p style="text-align: center;">Left: WIP of screen, clearer shot</p>
   </div>
   <div>
-    <img src="hudsight1.png" alt="Implementation of HUD" height="200"/>
+    <img src="images/hudsight1.png" height="200"/>
     <p style="text-align: center;">Right: Implementation of HUD</p>
   </div>
 </div>
@@ -268,7 +308,7 @@ I initially programmed the screen output to act as a HUD sight with a dynamic cr
 ### Reciprocating charging handle
 I intended for the solenoid introduction to allow for the addition of a reciprocating charging handle (purely aesthetic). I ended up removing it from my build because it didn’t quite work as well as I’d hoped, but the files and the slot at the side of the receiver still exist.
 <div align="center">
-    <img src="failedChargingHandle.png" alt="Failed charging handle component" width="300" />
+    <img src="images/failedChargingHandle.png" width="300" />
     <p>Failed charging handle component</p>
 </div>
 
