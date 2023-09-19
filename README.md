@@ -1,4 +1,5 @@
 # QT-19 build notes
+If you have questions, or feel like there are improvements that I can make, feel free to message me, I'm always looking to improve!
 
 ## 1. Overview
 I've been fond of toruk/torukmakto4's HyCon/T19 (T19 is a blaster, HyCon is a specific brushless cage) project for a while now, for the following features:
@@ -10,10 +11,13 @@ I've been fond of toruk/torukmakto4's HyCon/T19 (T19 is a blaster, HyCon is a sp
 The project is largely documented in toruk's blog: https://torukmakto4.blogspot.com/
 
 I've decided to make a personalised variant of this (Dubbed QT-19 because I think it's cute aesthetically) including the following changes:
-- Solenoid pusher (Clacky clacky feedback)
+- Solenoid pusher 
+    - IMO the mental feedback from the solenoid firing helps with usability
 - Worker Half darts (Ammo carrying capacity + compatibility with local community)
-- Narfduino board (Extremely convenient wiring)
+- Narfduino board
     - Created by AirzoneSama (https://github.com/airzone-sama, https://www.youtube.com/@AirzonesBlasters)
+    - This seemed like the easiest and oddly enough, most affordable means of getting my hands on SimonK compatible ESCs
+    - Extremely convenient wiring, half bridge, Flyshot flashing and everything handled
 - Step away from brutalist aesthetic for personal taste
 - (Other gimmicky shit that got abandoned)
 
@@ -27,7 +31,8 @@ Other similar T19-like builds:
     - https://www.reddit.com/r/Nerf/comments/f1izp3/full_auto_caliburn/
 - u/justusUMBC's "Spirit"
     - https://www.printables.com/model/451651-spirit-a-brushless-flywheel-dart-blaster
-
+- u/airzonesama's HyCon Caliburn
+    - https://www.youtube.com/watch?v=K4VExc-QwSc
 
 ## 2. Components
 List of components I used, note that they are not necessarily the ideal parts in each case. YMMV with your personal budget constraints and supply chains.
@@ -50,10 +55,9 @@ https://blastersbyairzone.com/hardware/narfduino/
 Note that this is arguably the "throw money" at the problem solution, as I'm given to understand that this is pricier than sourcing individual component directly, but my goodness was it nice to only have to solder the motors/switches/display/power into one broken-out, half-bridge-ready, pre-flashed board.
 
 ### 2.3 Battery:
-I'm using a 3S for now, but the system is supposed to run on 4S. I'm not familiar with the issues of
-running on 3S (Aside from weak solenoid throws, and potential issues sourcing high-capacity
-batteries), but toruk has hinted at encountering other issues relying on motors with high kV
-to compensate for the lower voltage.
+I'm using a 3S for now, but the system is supposed to run on 4S. I'm not familiar with the issues of running on 3S (Aside from weak solenoid throws, and potential issues sourcing high-capacity batteries), but toruk has hinted at encountering other issues relying on motors with high kV to compensate for the lower voltage.
+
+I've also noticed that it's easier to source batteries with higher capacity as we go to 4S, and the higher voltage will likely allow for more solenoid reliability (more force, reduces time required to push darts).
 
 Make sure to source a battery with a reasonably high max current output to facilitate the solenoid and large brushless motors; solenoids tend to drain a surprisingly high current. 
 
@@ -79,7 +83,6 @@ White 128x64 OLED Display Module for Arduino 0.96"
 
 ### 2.6 Screws:
 This blaster is assembled with a thrown-together assortment of M3 and M4 SHCS screws. I apologise that I have not kept track of the lengths. 
-
 
 - The stock and solenoid are held together with M4, everything else is M3. You should be able to get away with firstly an assortment of SCSH such as this: 
     <div align="center">
@@ -195,11 +198,15 @@ To make this compatible with the QT19 system you can pair this with:
 - Cages/Oldcages/Hy-Con-GammaMajor_Cover_iFlightXE_PRO_undercut.stl
 
 ### 3.4 Assembly notes
-Hole size -The SHSC used are M3 for the most part, some M4 near the back + solenoid mounting
-The stock is held together with M4, everything else is M3.
-The linked assembly instructions from torukmakto4’s original build provide a good reference for how to conduct assembly. https://torukmakto4.blogspot.com/2019/01/t19-build-guide-part-1-3d-printed-parts.html
+Prior to building a QT-19, look over Toruk's T19 assembly guide, master post here: https://torukmakto4.blogspot.com/2019/01/t19-build-guide-part-1-3d-printed-parts.html
 
-#### Grip
+My document only roughly covers the variations I've made, but is still centred around the T19 foundation, which has assembly documented in significantly more detail.
+
+Note:
+- Hole size -The SHSC used are M3 for the most part, some M4 near the back + solenoid mounting.
+- The stock is held together with M4, everything else is M3.
+
+#### 3.4.1 Grip
 The QT19 fileset has a spaced/spacer trigger as an alternative to the T19 - feel free to use either depending on your preferences. The original T19 relies on devcon to glue the pivot plate to the handle handle, and an SHCS with a smooth shoulder, whereas the QT9 adds a spacer that allow you to get away with using regular SHCS, and is more forgiving of overtorquing, which would otherwise cause the original T19 to jam.
 
 <div align="center">
@@ -214,7 +221,7 @@ I found it difficult to get the handle in the handle plate while aligning it, I 
     <p>Failed charging handle component</p>
 </div>
 
-#### Magwell/Breech
+#### 3.4.2 Magwell/Breech
 Similar to the trigger, the QT19 fileset has a mag release with a spacer to be more forgiving of overtorquing.
 
 <div align="center">
@@ -222,7 +229,7 @@ Similar to the trigger, the QT19 fileset has a mag release with a spacer to be m
     <p>QT19 trigger with spacer</p>
 </div>
 
-#### Receiver
+#### 3.4.3 Receiver
 The switch holder for the magazine release is a little awkward to assemble. Tackle this only after you attach the trigger plate to the receiver.
 
 Firstly, mount the switch inside the holder/bracket. I've done this using 4x M3x8 SHSC, which probably isn't the best way to handle these switches, feel free find a better way to do this.
@@ -241,14 +248,14 @@ Then push it down slowly, and to avoid the wires sticking out, I tucked them in 
     <p>Stuff wires into block, then push down block while poking wires in.</p>
 </div>
 
-Then I bolted the holder/bracket to the blaster body with a couple of button-head M3x8 SHSC.
+Then I bolted the holder/bracket to the blaster body with a 2x M3x8 SHSC.
 
 <div align="center">
     <img src="images/magblockassembled.jpg" width="300" />
     <p>Mag release block bolted in</p>
 </div>
 
-#### Stock
+#### 3.4.4 Stock
 
 <div align="center">
     <img src="images/stocktube.png" width="300" />
